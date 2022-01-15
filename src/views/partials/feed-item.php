@@ -1,18 +1,20 @@
-<div class="box feed-item">
+
+
+<div class="box feed-item" data-id="<?=$data->id;?>">
     <div class="box-body">
         <div class="feed-item-head row mt-20 m-width-20">
             <div class="feed-item-head-photo">
-                <a href=""><img src="<?=$base;?>/media/avatars/<?=$data->user->avatar;?>" /></a>
+                <a href="<?=$base;?>/perfil/<?=$data->user->id;?>"><img src="<?=$base;?>/media/avatars/<?=$data->user->avatar;?>" /></a>
             </div>
             <div class="feed-item-head-info">
-                <a href=""><span class="fidi-name"><?=$data->user->name;?></span></a>
+                <a href="<?=$base;?>/perfil/<?=$data->user->id;?>"><span class="fidi-name"><?=$data->user->name;?></span></a>
                 <span class="fidi-action">
                     <?php 
                         switch($data->type){
                             case 'text':
                                 echo 'fez um post';
                                 break;
-                            case 'foto':
+                            case 'photo':
                                 echo 'postou uma foto';
                                 break;
                         }
@@ -21,32 +23,51 @@
                 <br/>
                 <span class="fidi-date"><?=date('d/m/Y', strtotime($data->createdAt)); ?></span>
             </div>
-            <div class="feed-item-head-btn">
-                <img src="<?=$base;?>/assets/images/more.png" />
-            </div>
+            <?php if($data->mine):?>
+                <div class="feed-item-head-btn">
+                    <img src="<?=$base;?>/assets/images/more.png" />
+                    <div class="feed-item-more-window" >
+                        <a href="<?=$base;?>/post/<?=$data->id;?>/delete">Excluir Post</a>
+                    </div>
+                </div>
+            <?php endif;?>
         </div>
         <div class="feed-item-body mt-10 m-width-20">
-            <?=nl2br($data->body);?>
+            <?php
+                switch($data->type){
+                    case 'text':
+                        echo nl2br($data->body);
+                    break;
+                    case 'photo':
+                        echo '<img src="'.$base.'/media/uploads/'.$data->body.'" />';
+                    break;
+                }
+            ?>
         </div>
         <div class="feed-item-buttons row mt-20 m-width-20">
             <div class="like-btn <?=($data->liked ? 'on' : '')?>"><?=$data->likeCount;?></div>
             <div class="msg-btn"><?=count($data->comments);?></div>
         </div>
+
         <div class="feed-item-comments">
-            
-            <div class="fic-item row m-height-10 m-width-20">
-                <div class="fic-item-photo">
-                    <a href=""><img src="media/avatars/avatar.jpg" /></a>
-                </div>
-                <div class="fic-item-info">
-                    <a href="">Bonieky Lacerda</a>
-                    Comentando no meu próprio post
-                </div>
+
+            <div class="feed-item-comments-area">
+                <?php foreach($data->comments as $item): ?>
+                    <div class="fic-item row m-height-10 m-width-20">
+                        <div class="fic-item-photo">
+                            <a href="<?=$base;?>/perfil/<?=$item['user']['id'];?>"><img src="<?=$base;?>/media/avatars/<?=$item['user']['avatar'];?>" /></a>
+                        </div>
+                        <div class="fic-item-info">
+                            <a href="<?=$base;?>/perfil/<?=$item['user']['id'];?>"><?=$item['user']['name'];?></a>
+                            <?= $item['body']; ?>
+                        </div>
+                    </div>
+                <?php endforeach;?>
             </div>
 
             <div class="fic-answer row m-height-10 m-width-20">
                 <div class="fic-item-photo">
-                    <a href=""><img src="<?=$base;?>/media/avatars/<?=$loggedUser->avatar;?>" /></a>
+                    <a href="<?=$base;?>/perfil/<?=$data->user->id;?>"><img src="<?=$base;?>/media/avatars/<?=$loggedUser->avatar;?>" /></a>
                 </div>
                 <input type="text" class="fic-item-field" placeholder="Escreva um comentário" />
             </div>
@@ -54,3 +75,23 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function closeFeedWindow(){
+    document.querySelectorAll('.feed-item-more-window').forEach(item => {
+        item.style.display = 'none';
+    });
+    document.removeEventListener('click', closeFeedWindow);
+   
+}
+
+document.querySelectorAll('.feed-item-head-btn').forEach(item=>{
+    item.addEventListener('click', ()=>{
+        closeFeedWindow();
+        item.querySelector('.feed-item-more-window').style.display = 'block';
+    })
+    setTimeout(() => {
+        document.addEventListener('click', closeFeedWindow);
+    }, 500);
+})
+</script>

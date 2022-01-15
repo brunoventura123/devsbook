@@ -2,7 +2,7 @@
 namespace src\controllers;
 
 use \core\Controller;
-use \src\handlers\LoginHandler;
+use \src\handlers\UserHandler;
 
 class LoginController extends Controller {
 
@@ -23,7 +23,7 @@ class LoginController extends Controller {
 
         if($email && $password){
 
-            $token = LoginHandler::verifyLogin($email, $password);
+            $token = UserHandler::verifyLogin($email, $password);
             if($token){
                 $_SESSION['token'] = $token;
                 $this->redirect('/');
@@ -52,9 +52,12 @@ class LoginController extends Controller {
         $name = filter_input(INPUT_POST, 'name');
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
         $birthdate = filter_input(INPUT_POST, 'birthdate');
+        $city = filter_input(INPUT_POST, 'city');
+        $work = filter_input(INPUT_POST, 'work');
         $password = filter_input(INPUT_POST, 'password');
+        
 
-        if($name && $email && $birthdate && $password){
+        if($name && $email && $birthdate && $city && $work && $password){
             $birthdate = explode('/', $birthdate);
             if(count($birthdate) != 3){
                 $_SESSION['flash'] = 'Data de nascimento inválida.';
@@ -67,8 +70,8 @@ class LoginController extends Controller {
                 $this->redirect('/cadastro');
             }
 
-            if(LoginHandler::emailExists($email) === false){
-                $token = LoginHandler::addUser($name, $email, $birthdate, $password);
+            if(UserHandler::emailExists($email) === false){
+                $token = UserHandler::addUser($name, $email, $birthdate, $city, $work, $password);
                 $_SESSION['token'] = $token;
                 $this->redirect('/');
             } else{
@@ -81,4 +84,12 @@ class LoginController extends Controller {
         $this->redirect('/cadastro');
     }
     }
+
+    public function logout(){
+        $_SESSION['token'] = '';
+        $this->redirect('/login');
+    }
+
+    
+    
 }

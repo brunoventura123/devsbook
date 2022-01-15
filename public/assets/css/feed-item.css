@@ -36,7 +36,21 @@
     width:20px;
     height:20px;
 }
-
+.feed-item-more-window{
+    position: absolute;
+    background-color: #FFF;
+    padding: 5px;
+    width: 150px;
+    border: 1px solid #EEE;
+    border-radius: 3px;
+    margin-left: -130px;
+    display:none;
+}
+.feed-item-more-window a{
+    padding: 7px;
+    display: block;
+    text-decoration: none;
+}
 .feed-item-body {
     color:#333;
     line-height: 20px;

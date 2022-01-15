@@ -5,12 +5,13 @@
     <title>Desbook</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
     <link rel="stylesheet" href="<?=$base;?>/assets/css/style.css" />
+    
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo">
-                <a href="<?=$base;?>"><img src="<?=$base;?>/assets/images/devsbook_logo.png" /></a>
+                <a href="<?=$base;?>"><img src="<?=$base;?>/assets/images/logo.png" /></a>
             </div>
             <div class="head-side">
                 <div class="head-side-left">

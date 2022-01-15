@@ -26,6 +26,10 @@
 
             <input placeholder="Digite sua Data de Nascimento" class="input" type="text" name="birthdate" id="birthdate"/>
 
+            <input placeholder="Digite sua cidade" class="input" type="text" name="city" >
+
+            <input placeholder="Onde você trabalha?" class="input" type="text" name="work" >
+
             <input placeholder="Digite sua senha" class="input" type="password" name="password" />
 
             <input class="button" type="submit" value="Faser Cadastro" />
