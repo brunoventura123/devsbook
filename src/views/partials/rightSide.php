@@ -13,7 +13,7 @@
     </div>
     <div class="box">
         <div class="box-body m-10">
-            Criado com ❤️ por Bruno Ventura
+            Criado com ❤️ por B7Web
         </div>
     </div>
 </div>
